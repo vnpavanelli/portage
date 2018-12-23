@@ -1,0 +1,44 @@
+Script started on 2018-12-08 21:10:19-02:00
+]0;root@localhost:/usr/local/portage/dev-libs/InsightToolkit[01;31mlocalhost[01;34m /usr/local/portage/dev-libs/InsightToolkit #[00m ebuild InsightToolkit-4.13.1.ebuild mergehalt -p[Kebuild InsightToolkit-4.13.1.ebuild merge^C
+]0;root@localhost:/usr/local/portage/dev-libs/InsightToolkit[01;31mlocalhost[01;34m /usr/local/portage/dev-libs/InsightToolkit #[00m ebi[Kuild InsightToolkit-4.13.1.ebuild install
+>>> Existing ${T}/environment for 'InsightToolkit-4.13.1' will be sourced.
+>>> Run 'clean' to start with a fresh environment.
+>>> Checking InsightToolkit-4.13.1.tar.xz's mtime...
+>>> WORKDIR is up-to-date, keeping...
+[32;01m * [39;49;00mchecking ebuild checksums ;-) ...                                                                                                                                                   [34;01m[ [39;49;00m[32;01mok[39;49;00m[34;01m ][39;49;00m
+[32;01m * [39;49;00mchecking miscfile checksums ;-) ...                                                                                                                                                 [34;01m[ [39;49;00m[31;01m!![39;49;00m[34;01m ][39;49;00m
+
+!!! Digest verification failed:
+!!! /usr/local/portage/dev-libs/InsightToolkit/teste.txt
+!!! Reason: Filesize does not match recorded size
+!!! Got: 0
+!!! Expected: 557737
+]0;root@localhost:/usr/local/portage/dev-libs/InsightToolkit[01;31mlocalhost[01;34m /usr/local/portage/dev-libs/InsightToolkit #[00m ebuild InsightToolkit-4.13.1.ebuild manifest
+>>> Creating Manifest for /usr/local/portage/dev-libs/InsightToolkit
+]0;root@localhost:/usr/local/portage/dev-libs/InsightToolkit[01;31mlocalhost[01;34m /usr/local/portage/dev-libs/InsightToolkit #[00m ebuild InsightToolkit-4.13.1.ebuild manifest[1Pinstall
+>>> Existing ${T}/environment for 'InsightToolkit-4.13.1' will be sourced.
+>>> Run 'clean' to start with a fresh environment.
+>>> Checking InsightToolkit-4.13.1.tar.xz's mtime...
+>>> WORKDIR is up-to-date, keeping...
+[32;01m * [39;49;00mchecking ebuild checksums ;-) ...                                                                                                                                                   [34;01m[ [39;49;00m[32;01mok[39;49;00m[34;01m ][39;49;00m
+[32;01m * [39;49;00mchecking miscfile checksums ;-) ...                                                                                                                                                 [34;01m[ [39;49;00m[32;01mok[39;49;00m[34;01m ][39;49;00m
+>>> It appears that 'pretend' has already executed for 'InsightToolkit-4.13.1'; skipping.
+>>> Remove '/var/tmp/portage/dev-libs/InsightToolkit-4.13.1/.pretended' to force pretend.
+>>> It appears that 'setup' has already executed for 'InsightToolkit-4.13.1'; skipping.
+>>> Remove '/var/tmp/portage/dev-libs/InsightToolkit-4.13.1/.setuped' to force setup.
+>>> It appears that 'unpack' has already executed for 'InsightToolkit-4.13.1'; skipping.
+>>> Remove '/var/tmp/portage/dev-libs/InsightToolkit-4.13.1/.unpacked' to force unpack.
+>>> It appears that 'prepare' has already executed for 'InsightToolkit-4.13.1'; skipping.
+>>> Remove '/var/tmp/portage/dev-libs/InsightToolkit-4.13.1/.prepared' to force prepare.
+>>> It appears that 'configure' has already executed for 'InsightToolkit-4.13.1'; skipping.
+>>> Remove '/var/tmp/portage/dev-libs/InsightToolkit-4.13.1/.configured' to force configure.
+>>> It appears that 'compile' has already executed for 'InsightToolkit-4.13.1'; skipping.
+>>> Remove '/var/tmp/portage/dev-libs/InsightToolkit-4.13.1/.compiled' to force compile.
+>>> Test phase [not enabled]: dev-libs/InsightToolkit-4.13.1
+
+>>> Install InsightToolkit-4.13.1 into /var/tmp/portage/dev-libs/InsightToolkit-4.13.1/image/ category dev-libs
+ ******************* 
+ **** Searching /var/tmp/portage/dev-libs/InsightToolkit-4.13.1/image/
+ ******************* 
+ Deleting
+rm: cannot remove '/var/tmp/portage/dev-li
