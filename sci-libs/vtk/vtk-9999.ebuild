@@ -142,6 +142,7 @@ src_prepare() {
 }
 
 src_configure() {
+	CMAKE_BUILD_TYPE="Release"
 	# general configuration
 	local mycmakeargs=(
 		-Wno-dev
@@ -214,6 +215,7 @@ src_configure() {
 		-DModule_vtkIOGeoJSON=$(usex json)
 		-DModule_vtkIOXdmf2=$(usex xdmf2)
 		-DBUILD_TESTING=$(usex examples)
+		-DCMAKE_BUILD_TYPE=Release
 	# Apple stuff, does it really work?
 		-DVTK_USE_COCOA=$(usex aqua)
 	)
