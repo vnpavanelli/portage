@@ -20,8 +20,8 @@ SLOT="0/1.10.4"
 KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~ia64 ~ppc ~ppc64 ~sparc ~x86 ~x86-fbsd ~amd64-linux ~x86-linux"
 IUSE="cxx debug examples fortran +hl mpi static-libs szip threads zlib"
 
+#	cxx? ( !mpi ) mpi? ( !cxx )
 REQUIRED_USE="
-	cxx? ( !mpi ) mpi? ( !cxx )
 	threads? ( !cxx !mpi !fortran !hl )"
 
 RDEPEND="
