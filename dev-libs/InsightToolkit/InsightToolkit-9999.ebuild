@@ -35,7 +35,7 @@ src_configure() {
 		-DITK_USE_SYSTEM_PNG=ON
 		-DITK_USE_SYSTEM_TIFF=ON
 		-DITK_USE_SYSTEM_ZLIB=ON
-		-DITK_USE_SYSTEM_HDF5=ON
+#		-DITK_USE_SYSTEM_HDF5=ON
 	)
 	if use itkvtkglue; then
 		mycmakeargs+=( -DModule_ITKVtkGlue=ON )
@@ -49,6 +49,7 @@ src_install() {
 	find ${D} -name libopenjp2.pc -print
 	echo " ************ Deleting libopenjp2.pc files" 
 	find ${D} -name libopenjp2.pc -delete
+	find ${D} -name libhdf5.settings -delete
 	echo " ************ Seaching again: ************" 
 	find ${D} -name libopenjp2.pc -print
 	echo " ************ Done **********"
