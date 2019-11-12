@@ -1,25 +1,33 @@
-# Copyright 1999-2018 Gentoo Authors
+# Copyright 1999-2019 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
 
-PYTHON_COMPAT=( python{2_7,3_5,3_6} )
+#PYTHON_COMPAT=( python{2_7,3_5,3_6} )
+PYTHON_COMPAT=( python{3_5,3_6} )
 WEBAPP_OPTIONAL=yes
 WEBAPP_MANUAL_SLOT=yes
 
-inherit flag-o-matic java-pkg-opt-2 python-single-r1 qmake-utils versionator toolchain-funcs cmake-utils virtualx webapp git-r3
+inherit flag-o-matic java-pkg-opt-2 python-single-r1 qmake-utils versionator toolchain-funcs cmake-utils virtualx webapp
 
 # Short package version
 SPV="$(get_version_component_range 1-2)"
 
 DESCRIPTION="The Visualization Toolkit"
 HOMEPAGE="https://www.vtk.org/"
-EGIT_REPO_URI="https://github.com/Kitware/VTK.git"
+SRC_URI="
+	https://www.vtk.org/files/release/${SPV}/VTK-${PV}.tar.gz
+	doc? ( https://www.vtk.org/files/release/${SPV}/vtkDocHtml-${PV}.tar.gz )
+	examples? (
+		https://www.vtk.org/files/release/${SPV}/VTKData-${PV}.tar.gz
+		https://www.vtk.org/files/release/${SPV}/VTKLargeData-${PV}.tar.gz
+	)"
+
 LICENSE="BSD LGPL-2"
 KEYWORDS="~amd64 ~x86 ~amd64-linux ~x86-linux"
 SLOT="0"
 IUSE="
-	all-modules aqua boost doc examples imaging ffmpeg gdal java json kaapi mpi
+	all-modules aqua boost doc examples imaging ffmpeg gdal java json mpi
 	mysql odbc offscreen postgres python qt5 rendering tbb theora tk tcl
 	video_cards_nvidia views web R +X xdmf2 vtkm opengl"
 
@@ -65,7 +73,6 @@ RDEPEND="
 	ffmpeg? ( virtual/ffmpeg )
 	gdal? ( sci-libs/gdal )
 	java? ( >=virtual/jdk-1.7:* )
-	kaapi? ( <sci-libs/xkaapi-3 )
 	mpi? (
 		virtual/mpi[cxx,romio]
 		python? ( dev-python/mpi4py[${PYTHON_USEDEP}] )
@@ -108,7 +115,7 @@ RDEPEND="
 DEPEND="${RDEPEND}
 	doc? ( app-doc/doxygen )"
 
-# S="${WORKDIR}"/VTK-${PV}
+S="${WORKDIR}"/VTK-${PV}
 
 RESTRICT="test"
 
@@ -119,23 +126,7 @@ pkg_setup() {
 }
 
 src_prepare() {
-#	local x
-	# missing: VPIC freerange libproj4 mrmpi sqlite utf8 verdict xmdf2 xmdf3
-#	for x in expat freetype hdf5 jpeg jsoncpp libharu libxml2 lz4 netcdf ogg png tiff zlib ; do
-#		ebegin "Dropping bundled ${x}"
-#		rm -r ThirdParty/${x}/vtk${x} || die
-#		eend $?
-#	done
-#	rm -r \
-#		ThirdParty/AutobahnPython/vtkAutobahn \
-#		|| die
-#
-#	if use doc; then
-#		einfo "Removing .md5 files from documents."
-#		rm -f "${WORKDIR}"/html/*.md5 || die "Failed to remove superfluous hashes"
-#		sed -e "s|\${VTK_BINARY_DIR}/Utilities/Doxygen/doc|${WORKDIR}|" \
-#			-i Utilities/Doxygen/CMakeLists.txt || die
-#	fi
+
 	sed -i 's/vtkJson/Json/g' ${S}/IO/Export/vtkGLTFExporter.cxx
 
 	cmake-utils_src_prepare
@@ -216,7 +207,6 @@ src_configure() {
 		-DModule_vtkIOGeoJSON=$(usex json)
 		-DModule_vtkIOXdmf2=$(usex xdmf2)
 		-DBUILD_TESTING=$(usex examples)
-		-DCMAKE_BUILD_TYPE=Release
 	# Apple stuff, does it really work?
 		-DVTK_USE_COCOA=$(usex aqua)
 	)
@@ -232,14 +222,14 @@ src_configure() {
 		mycmakeargs+=( -DModule_vtkAcceleratorsVTKm:BOOL=ON -DModule_vtkVTKm:BOOL=ON )
 	fi
 
+
+
 	if use java; then
 		local javacargs=$(java-pkg_javac-args)
 		mycmakeargs+=( -DJAVAC_OPTIONS=${javacargs// /;} )
 	fi
 
-	if use kaapi; then
-		mycmakeargs+=( -DVTK_SMP_IMPLEMENTATION_TYPE="Kaapi" )
-	elif use tbb; then
+	if use tbb; then
 		mycmakeargs+=( -DVTK_SMP_IMPLEMENTATION_TYPE="TBB" )
 	else
 		mycmakeargs+=( -DVTK_SMP_IMPLEMENTATION_TYPE="Sequential" )
@@ -257,6 +247,11 @@ src_configure() {
 			-DVTK_PYTHON_SETUP_ARGS:STRING="--prefix=${EPREFIX} --root=${D}"
 			-DVTK_USE_SYSTEM_SIX=ON
 		)
+		if python_is_python3; then
+			mycmakeargs+=(
+				-DVTK_PYTHON_VERSION="3"
+			)
+		fi
 	fi
 
 	if use qt5; then
