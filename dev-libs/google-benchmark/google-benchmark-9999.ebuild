@@ -14,7 +14,7 @@ IUSE=""
 
 RDEPEND="
 	dev-util/cmake
-	dev-libs/google-test
+	dev-cpp/gtest
 "
 DEPEND="${RDEPEND}"
 
