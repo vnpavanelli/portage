@@ -42,6 +42,7 @@ REQUIRED_USE="
 	^^ ( X aqua offscreen )"
 
 RDEPEND="
+	dev-python/mpi4py
 	media-libs/glew
 	sci-libs/proj
 	dev-libs/pugixml
@@ -144,6 +145,7 @@ src_configure() {
 		-DVTK_CUSTOM_LIBRARY_SUFFIX=""
 		-DBUILD_SHARED_LIBS=ON
 		-DVTK_BUILD_TESTING=OFF
+		-DVTK_USE_SYSTEM_MPI4PY=ON
 		-DVTK_USE_SYSTEM_AUTOBAHN=ON
 		-DVTK_USE_SYSTEM_EXPAT=ON
 		-DVTK_USE_SYSTEM_FREETYPE=ON
