@@ -34,7 +34,6 @@ IUSE="
 REQUIRED_USE="
 	all-modules? ( python xdmf2 boost )
 	java? ( qt5 )
-	python? ( ${PYTHON_REQUIRED_USE} )
 	tcl? ( rendering )
 	examples? ( python )
 	tk? ( tcl )
@@ -76,7 +75,7 @@ RDEPEND="
 	java? ( >=virtual/jdk-1.7:* )
 	mpi? (
 		virtual/mpi[cxx,romio]
-		python? ( dev-python/mpi4py[${PYTHON_USEDEP}] )
+		python? ( dev-python/mpi4py )
 	)
 	mysql? ( virtual/mysql )
 	odbc? ( dev-db/unixODBC )
@@ -84,7 +83,7 @@ RDEPEND="
 	postgres? ( dev-db/postgresql:= )
 	python? (
 		${PYTHON_DEPS}
-		dev-python/sip[${PYTHON_USEDEP}]
+		dev-python/sip
 	)
 	qt5? (
 		dev-qt/designer:5
@@ -94,7 +93,7 @@ RDEPEND="
 		dev-qt/qtsql:5
 		dev-qt/qtwebkit:5
 		dev-qt/qtx11extras:5
-		python? ( dev-python/PyQt5[${PYTHON_USEDEP}] )
+		python? ( dev-python/PyQt5 )
 	)
 	R? ( dev-lang/R )
 	tbb? ( dev-cpp/tbb )
@@ -103,14 +102,14 @@ RDEPEND="
 	video_cards_nvidia? ( x11-drivers/nvidia-drivers[tools,static-libs] )
 	web? (
 		${WEBAPP_DEPEND}
-		dev-python/autobahn[${PYTHON_USEDEP}]
-		dev-python/constantly[${PYTHON_USEDEP}]
-		dev-python/hyperlink[${PYTHON_USEDEP}]
-		dev-python/incremental[${PYTHON_USEDEP}]
-		dev-python/six[${PYTHON_USEDEP}]
-		dev-python/twisted[${PYTHON_USEDEP}]
-		dev-python/txaio[${PYTHON_USEDEP}]
-		dev-python/zope-interface[${PYTHON_USEDEP}]
+		dev-python/autobahn
+		dev-python/constantly
+		dev-python/hyperlink
+		dev-python/incremental
+		dev-python/six
+		dev-python/twisted
+		dev-python/txaio
+		dev-python/zope-interface
 	)
 	xdmf2? ( sci-libs/xdmf2 )"
 DEPEND="${RDEPEND}
