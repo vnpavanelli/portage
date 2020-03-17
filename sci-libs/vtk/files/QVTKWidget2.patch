@@ -1,0 +1,12 @@
+diff -Naur before/GUISupport/QtOpenGL/QVTKWidget2.cxx after/GUISupport/QtOpenGL/QVTKWidget2.cxx
+--- before/GUISupport/QtOpenGL/QVTKWidget2.cxx	2020-03-11 09:49:12.000000000 -0300
++++ after/GUISupport/QtOpenGL/QVTKWidget2.cxx	2020-03-17 19:41:34.547406127 -0300
+@@ -485,7 +485,7 @@
+ 
+ void QVTKWidget2::Frame()
+ {
+-  this->Superclass::Frame();
++//  this->Superclass::Frame();
+   if (mRenWin->GetSwapBuffers())
+   {
+     this->swapBuffers();

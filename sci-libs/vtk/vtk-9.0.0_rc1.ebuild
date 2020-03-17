@@ -24,6 +24,10 @@ SRC_URI="
 		https://www.vtk.org/files/release/${SPV}/VTKLargeData-${PV}.tar.gz
 	)"
 
+PATCHES=(
+	"${FILESDIR}/QVTKWidget2.patch"
+)
+
 LICENSE="BSD LGPL-2"
 KEYWORDS="~amd64 ~x86 ~amd64-linux ~x86-linux"
 SLOT="0"
