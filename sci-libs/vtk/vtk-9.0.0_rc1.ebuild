@@ -8,6 +8,8 @@ PYTHON_COMPAT=( python{3_5,3_6} )
 WEBAPP_OPTIONAL=yes
 WEBAPP_MANUAL_SLOT=yes
 
+PV="9.0.0.rc1"
+
 inherit flag-o-matic java-pkg-opt-2 python-single-r1 qmake-utils versionator toolchain-funcs cmake-utils virtualx webapp
 
 # Short package version
@@ -17,7 +19,6 @@ DESCRIPTION="The Visualization Toolkit"
 HOMEPAGE="https://www.vtk.org/"
 SRC_URI="
 	https://www.vtk.org/files/release/${SPV}/VTK-${PV}.tar.gz
-	doc? ( https://www.vtk.org/files/release/${SPV}/vtkDocHtml-${PV}.tar.gz )
 	examples? (
 		https://www.vtk.org/files/release/${SPV}/VTKData-${PV}.tar.gz
 		https://www.vtk.org/files/release/${SPV}/VTKLargeData-${PV}.tar.gz
