@@ -224,6 +224,11 @@ src_configure() {
 		)
 	fi
 
+	if use rendering; then
+		mycmakeargs+=( -DVTK_MODULE_ENABLE_VTK_RenderingRayTracing=YES
+		)
+	fi
+
 	if use vtkm; then
 		mycmakeargs+=( -DModule_vtkAcceleratorsVTKm:BOOL=ON -DModule_vtkVTKm:BOOL=ON )
 	fi
