@@ -11,7 +11,7 @@ HOMEPAGE="https://itk.org"
 LICENSE="public-domain"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE="itkvtkglue"
+IUSE="itkvtkglue gcc-8"
 
 RDEPEND="
 	dev-util/cmake
@@ -41,6 +41,10 @@ src_configure() {
 	if use itkvtkglue; then
 		mycmakeargs+=( -DModule_ITKVtkGlue=ON )
 	fi
+	if use gcc-8; then
+		mycmakeargs+=( -DCMAKE_CXX_COMPILER=g++-8 )
+	fi
+
 	cmake-utils_src_configure
 }
 
