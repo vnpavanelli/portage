@@ -246,8 +246,8 @@ multilib_src_compile() {
 
 multilib_src_install() {
 	meson_src_install
-	mkdir "${D}/opt"
-	mv "${D}/usr" "${D}/opt/mesa_x2go"
+	mkdir "${ED}/opt"
+	mv "${ED}/usr" "${ED}/opt/mesa_x2go"
 
 }
 
