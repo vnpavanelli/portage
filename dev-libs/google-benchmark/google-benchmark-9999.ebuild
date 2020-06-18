@@ -21,6 +21,7 @@ DEPEND="${RDEPEND}"
 src_configure() {
     # general configuration
 	local mycmakeargs=(
+		"-DBENCHMARK_ENABLE_TESTING=OFF"
 	)
 	cmake-utils_src_configure
 }
