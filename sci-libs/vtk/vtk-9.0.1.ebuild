@@ -1,35 +1,42 @@
 # Copyright 1999-2019 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=7
 
 #PYTHON_COMPAT=( python{2_7,3_5,3_6} )
-PYTHON_COMPAT=( python{3_5,3_6} )
+PYTHON_COMPAT=( python{3_6,3_7,3_8} )
 WEBAPP_OPTIONAL=yes
 WEBAPP_MANUAL_SLOT=yes
 
-inherit flag-o-matic java-pkg-opt-2 python-single-r1 qmake-utils versionator toolchain-funcs cmake-utils virtualx webapp
+# PV="9.0.0.rc1"
+
+inherit flag-o-matic java-pkg-opt-2 python-single-r1 qmake-utils toolchain-funcs cmake-utils virtualx webapp
 
 # Short package version
-SPV="$(get_version_component_range 1-2)"
+SPV="9.0"
+
+echo "SPV: $SPV"
 
 DESCRIPTION="The Visualization Toolkit"
 HOMEPAGE="https://www.vtk.org/"
 SRC_URI="
 	https://www.vtk.org/files/release/${SPV}/VTK-${PV}.tar.gz
-	doc? ( https://www.vtk.org/files/release/${SPV}/vtkDocHtml-${PV}.tar.gz )
 	examples? (
 		https://www.vtk.org/files/release/${SPV}/VTKData-${PV}.tar.gz
 		https://www.vtk.org/files/release/${SPV}/VTKLargeData-${PV}.tar.gz
 	)"
 
+#PATCHES=(
+#	"${FILESDIR}/QVTKWidget2.patch"
+#)
+#
 LICENSE="BSD LGPL-2"
-KEYWORDS="~amd64 ~x86 ~amd64-linux ~x86-linux"
+KEYWORDS="amd64 ~x86 amd64-linux ~x86-linux"
 SLOT="0"
 IUSE="
 	all-modules aqua boost doc examples imaging ffmpeg gdal java json mpi
 	mysql odbc offscreen postgres python qt5 rendering tbb theora tk tcl
-	video_cards_nvidia views web R +X xdmf2 vtkm opengl"
+	video_cards_nvidia views web R +X xdmf2 vtkm opengl x2go"
 
 REQUIRED_USE="
 	all-modules? ( python xdmf2 boost )
@@ -65,12 +72,13 @@ RDEPEND="
 	x11-libs/libX11
 	x11-libs/libXmu
 	x11-libs/libXt
+	>=x11-libs/gl2ps-1.4.1
 	boost? ( dev-libs/boost:=[mpi?] )
 	examples? (
 		dev-qt/qtcore:5
 		dev-qt/qtgui:5
 	)
-	ffmpeg? ( virtual/ffmpeg )
+	ffmpeg? ( media-video/ffmpeg )
 	gdal? ( sci-libs/gdal )
 	java? ( >=virtual/jdk-1.7:* )
 	mpi? (
@@ -99,7 +107,6 @@ RDEPEND="
 	tbb? ( dev-cpp/tbb )
 	tcl? ( dev-lang/tcl:0= )
 	tk? ( dev-lang/tk:0= )
-	video_cards_nvidia? ( x11-drivers/nvidia-drivers[tools,static-libs] )
 	web? (
 		${WEBAPP_DEPEND}
 		dev-python/autobahn
@@ -128,7 +135,9 @@ pkg_setup() {
 src_prepare() {
 
 	sed -i 's/vtkJson/Json/g' ${S}/IO/Export/vtkGLTFExporter.cxx
-
+	if use x2go; then
+		cp "${FILESDIR}/FindOpenGL.cmake" "${S}/CMake/patches/99"
+	fi
 	cmake-utils_src_prepare
 }
 
@@ -144,29 +153,44 @@ src_configure() {
 		-DVTK_CUSTOM_LIBRARY_SUFFIX=""
 		-DBUILD_SHARED_LIBS=ON
 		-DVTK_BUILD_TESTING=OFF
-		-DVTK_USE_SYSTEM_MPI4PY=ON
-		-DVTK_USE_SYSTEM_AUTOBAHN=ON
-		-DVTK_USE_SYSTEM_EXPAT=ON
-		-DVTK_USE_SYSTEM_FREETYPE=ON
-		-DVTK_USE_SYSTEM_FreeType=ON
-		# Use bundled gl2ps (bundled version is a patched version of 1.3.9. Post 1.3.9 versions should be compatible)
-		-DVTK_USE_SYSTEM_GL2PS=OFF
-		-DVTK_USE_SYSTEM_HDF5=ON
-		-DVTK_USE_SYSTEM_JPEG=ON
-		-DVTK_USE_SYSTEM_LIBXML2=ON
-		-DVTK_USE_SYSTEM_LibXml2=ON
-		-DVTK_USE_SYSTEM_NETCDF=ON
-		-DVTK_USE_SYSTEM_OGGTHEORA=ON
-		-DVTK_USE_SYSTEM_PNG=ON
-		-DVTK_USE_SYSTEM_TIFF=ON
-		-DVTK_USE_SYSTEM_TWISTED=ON
-		-DVTK_USE_SYSTEM_XDMF2=OFF
-		-DVTK_USE_SYSTEM_XDMF3=OFF
-		-DVTK_USE_SYSTEM_ZLIB=ON
-		-DVTK_USE_SYSTEM_ZOPE=ON
-		-DVTK_USE_SYSTEM_JSONCPP=ON
-		-DVTK_USE_SYSTEM_LIBRARIES=ON
-		-DVTK_USE_SYSTEM_LIBPROJ4=ON
+		-DVTK_MODULE_USE_EXTERNAL_VTK_eigen=ON
+		-DVTK_MODULE_USE_EXTERNAL_VTK_expat=ON
+		-DVTK_MODULE_USE_EXTERNAL_VTK_freetype=ON
+		-DVTK_MODULE_USE_EXTERNAL_VTK_gl2ps=ON
+		-DVTK_MODULE_USE_EXTERNAL_VTK_glew=ON
+		-DVTK_MODULE_USE_EXTERNAL_VTK_hdf5=ON
+		-DVTK_MODULE_USE_EXTERNAL_VTK_jpeg=ON
+		-DVTK_MODULE_USE_EXTERNAL_VTK_jsoncpp=ON
+		-DVTK_MODULE_USE_EXTERNAL_VTK_libxml2=ON
+		-DVTK_MODULE_USE_EXTERNAL_VTK_lz4=ON
+		-DVTK_MODULE_USE_EXTERNAL_VTK_lzma=ON
+		-DVTK_MODULE_USE_EXTERNAL_VTK_netcdf=ON
+		-DVTK_MODULE_USE_EXTERNAL_VTK_ogg=ON
+		-DVTK_MODULE_USE_EXTERNAL_VTK_png=ON
+		-DVTK_MODULE_USE_EXTERNAL_VTK_sqlite=ON
+		-DVTK_MODULE_USE_EXTERNAL_VTK_tiff=ON
+		-DVTK_MODULE_USE_EXTERNAL_VTK_utf8=OFF
+		-DVTK_MODULE_USE_EXTERNAL_VTK_zlib=ON
+# 		-DVTK_USE_SYSTEM_MPI4PY=ON
+# 		-DVTK_USE_SYSTEM_AUTOBAHN=ON
+# 		# Use bundled gl2ps (bundled version is a patched version of 1.3.9. Post 1.3.9 versions should be compatible)
+# 		-DVTK_USE_SYSTEM_GL2PS=OFF
+# 		-DVTK_USE_SYSTEM_HDF5=ON
+# 		-DVTK_USE_SYSTEM_JPEG=ON
+# 		-DVTK_USE_SYSTEM_LIBXML2=ON
+# 		-DVTK_USE_SYSTEM_LibXml2=ON
+# 		-DVTK_USE_SYSTEM_NETCDF=ON
+# 		-DVTK_USE_SYSTEM_OGGTHEORA=ON
+# 		-DVTK_USE_SYSTEM_PNG=ON
+# 		-DVTK_USE_SYSTEM_TIFF=ON
+# 		-DVTK_USE_SYSTEM_TWISTED=ON
+# 		-DVTK_USE_SYSTEM_XDMF2=OFF
+# 		-DVTK_USE_SYSTEM_XDMF3=OFF
+# 		-DVTK_USE_SYSTEM_ZLIB=ON
+# 		-DVTK_USE_SYSTEM_ZOPE=ON
+# 		-DVTK_USE_SYSTEM_JSONCPP=ON
+# 		-DVTK_USE_SYSTEM_LIBRARIES=ON
+# 		-DVTK_USE_SYSTEM_LIBPROJ4=ON
 		# Use bundled diy2 (no gentoo package / upstream does not provide a Finddiy2.cmake or diy2Config.cmake / diy2-config.cmake)
 		-DVTK_USE_SYSTEM_DIY2=OFF
 		-DVTK_USE_GL2PS=ON
@@ -214,8 +238,21 @@ src_configure() {
 
 	if use opengl; then
 		mycmakeargs+=( -DVTK_MODULE_ENABLE_VTK_RenderingVolumeOpenGL2=YES 
-#			-DVTK_OPENGL_HAS_EGL=YES
-#			-DVTK_OPENGL_USE_GLES=YES
+		)
+	fi
+
+	if use x2go; then
+		mycmakeargs+=( 
+			-DOpenGL_GL_PREFERENCE=LEGACY
+			-DOpenGL_X2GO=true
+			-DOpenGL_INCLUDE_DIR=/opt/mesa_x2go/include
+			-DOpenGL_LIBRARIES=/opt/mesa_x2go/lib64
+			-DCMAKE_MODULE_PATH=${S}/CMake
+		)
+	fi
+
+	if use rendering; then
+		mycmakeargs+=( -DVTK_MODULE_ENABLE_VTK_RenderingRayTracing=YES
 		)
 	fi
 

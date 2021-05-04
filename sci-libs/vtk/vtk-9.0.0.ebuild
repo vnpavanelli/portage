@@ -1,19 +1,19 @@
 # Copyright 1999-2019 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=7
 
 #PYTHON_COMPAT=( python{2_7,3_5,3_6} )
-PYTHON_COMPAT=( python{3_5,3_6} )
+PYTHON_COMPAT=( python{3_6,3_7,3_8} )
 WEBAPP_OPTIONAL=yes
 WEBAPP_MANUAL_SLOT=yes
 
 # PV="9.0.0.rc1"
 
-inherit flag-o-matic java-pkg-opt-2 python-single-r1 qmake-utils versionator toolchain-funcs cmake-utils virtualx webapp
+inherit flag-o-matic java-pkg-opt-2 python-single-r1 qmake-utils toolchain-funcs cmake-utils virtualx webapp
 
 # Short package version
-SPV="$(get_version_component_range 1-2)"
+SPV="$(ver_cut [1-2])"
 
 DESCRIPTION="The Visualization Toolkit"
 HOMEPAGE="https://www.vtk.org/"
@@ -76,7 +76,7 @@ RDEPEND="
 		dev-qt/qtcore:5
 		dev-qt/qtgui:5
 	)
-	ffmpeg? ( virtual/ffmpeg )
+	ffmpeg? ( media-video/ffmpeg )
 	gdal? ( sci-libs/gdal )
 	java? ( >=virtual/jdk-1.7:* )
 	mpi? (
@@ -105,7 +105,6 @@ RDEPEND="
 	tbb? ( dev-cpp/tbb )
 	tcl? ( dev-lang/tcl:0= )
 	tk? ( dev-lang/tk:0= )
-	video_cards_nvidia? ( x11-drivers/nvidia-drivers[tools,static-libs] )
 	web? (
 		${WEBAPP_DEPEND}
 		dev-python/autobahn
